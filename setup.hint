@@ -1,0 +1,8 @@
+sdesc: "Format string security checker for C files"
+ldesc: "A program which attempts to scan C source files for common function
+abuses, which often lead to security problems. This program will scan
+source files for functions that use variadic functions and warn of
+potential abuses. It is a useful tool for those performing source code
+audits."
+category: Security
+requires: cygwin

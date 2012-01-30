@@ -1,0 +1,51 @@
+.\" pscan man page
+.\"
+.\"
+.\" .de Id
+.\" .ds Dt \\$4
+.\" ..
+.\" .Id 1.0
+.\" .ds = \-\^\-
+.\" .de Sp
+.\" .if t .sp .3
+.\" .if n .sp
+.\" ..
+.\" .ta 3n
+.TH "pscan" "1" "\*(Dt" "GNU" ""
+.SH "NAME"
+pscan \- Format string security checker for C source code
+.SH "SYNOPSIS"
+.B pscan
+.RI [ options ]
+.Sp
+.B pscan
+is a source code analysis tool which is designed to highlight potentially dangerous uses of variadic functions such as "printf", "syslog", etc.
+
+
+
+.SH "DETAILS"
+.Sp
+  The scan works by looking for a one of a list of problem functions, and applying the following rule:
+.Sp
+  IF the last parameter of the function is the format string,
+  AND the format string is NOT a static string,
+  THEN complain.
+.Sp
+
+.SH "LIMITATIONS"
+.Sp
+  The code will not report on some potention buffer overflows, because that is not its goal.  For example the following code is potential dangerous:
+.Sp
+  sprintf( static_buffer, "%s/.foorc", getenv("HOME") );
+.Sp
+  This code could cause an issue as there is no immediately obvious bounds checking.  However this is a safe usages with regards to format strings.
+
+
+.SH "RETURN VALUES"
+.Sp
+  If there are any errors found, pscan exits with status 1.
+
+
+.SH "AUTHOR Alan DeKok <aland@ox.org>"
+
+

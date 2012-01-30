@@ -1,0 +1,52 @@
+ Makefile |   31 +++++++++++++++++++++++++++++--
+ 1 files changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index aa7fbbf..358d56d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -13,11 +13,28 @@
+ #CC=gcc -Wall -g
+ #LEX=flex
+ 
++DESTDIR         =
++prefix          = /usr
++exec_prefix     = $(prefix)
++man_prefix      = $(prefix)/share
++
++INSTALL         = /usr/bin/install
++INSTALL_BIN     = $(INSTALL) -m 755
++INSTALL_DATA    = $(INSTALL) -m 644
++INSTALL_OBJS    = pscan
++
++MANDIR          = $(DESTDIR)$(man_prefix)/man/man1
++BINDIR          = $(DESTDIR)$(exec_prefix)/bin
++LEX		= flex
++LDFLAGS		= -lfl
++
++all: pscan
++
+ pscan: scanner.yy.o pscan.o
+-	$(CC) scanner.yy.o pscan.o -o pscan
++	$(CC) $(CFLAGS) scanner.yy.o pscan.o -o pscan $(LDFLAGS)
+ 
+ scanner.yy.o: scanner.yy.c
+-	$(CC) -c scanner.yy.c -o scanner.yy.o
++	$(CC) $(CFLAGS) -c scanner.yy.c -o scanner.yy.o
+ 
+ scanner.yy.c: scanner.l
+ 	$(LEX) -t scanner.l > scanner.yy.c
+@@ -26,3 +43,13 @@ pscan.o: pscan.c pscan.h
+ 
+ clean:
+ 	rm -f *.o *~ pscan scanner.yy.c core
++
++install-bin:
++	$(INSTALL_BIN) -d $(BINDIR)
++	$(INSTALL_BIN) -s $(INSTALL_OBJS) $(BINDIR)
++
++install-man:
++	$(INSTALL_BIN) -d $(MANDIR)
++	$(INSTALL_DATA) *.1 $(MANDIR)
++
++install: all install-bin

@@ -1,0 +1,2 @@
+tag1: pscan
+  http://packages.debian.org/unstable/pscan pregexp:orig.tar.gz file:pscan_1.2.orig.tar.gz new: x:
